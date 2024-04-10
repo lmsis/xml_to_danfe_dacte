@@ -36,6 +36,7 @@ var Impostos = (function () {
 
     Impostos.prototype.comValorDoIcms = function (_valorDoIcms) {
         this._valorDoIcms = _valorDoIcms;
+
         return this;
     };
 
@@ -75,6 +76,27 @@ var Impostos = (function () {
     Impostos.prototype.comValorDoIcmsSt = function (_ValorDoIcmsSt) {
         this._ValorDoIcmsSt = _ValorDoIcmsSt;
         return this;
+    };
+
+    // Impostos.prototype.comIcms = function (_comIcms) {
+    //     this._comIcms = _comIcms;
+    //     return this;
+    // };
+
+    // Impostos.prototype.getIcms = function () {
+    //     return this._comIcms;
+    // };
+
+    Impostos.prototype.getTpIcms = function () {
+        return (
+            {
+                "00": "Tributada Integralmente",
+                40: "Isenta",
+                41: "Não Tributada",
+                51: "Diferimento",
+                90: "Regime Normal",
+            }[this.getIcms()] || ""
+        );
     };
 
     Impostos.prototype.getValorDoImpostoDeImportacao = function () {
@@ -213,6 +235,15 @@ var Impostos = (function () {
 
     Impostos.prototype.getValorFCP = function () {
         return this._valorFCP;
+    };
+
+    Impostos.prototype.comSitTrib = function (_stringSitTrib) {
+        this._stringSitTrib = _stringSitTrib;
+        return this;
+    };
+
+    Impostos.prototype.getSitTrib = function () {
+        return this._stringSitTrib;
     };
 
     Impostos.prototype.getValorTotTrib = function () {

@@ -7,8 +7,6 @@ const Recebedor = require("./recebedor");
 // CLASSES CRIADAS PARA O CTE
 
 var gammautils = require("../../gammautils/index"),
-    eDataValida = gammautils.date.isValidDate,
-    ie = require("inscricaoestadual"),
     Impostos = require("./impostos"),
     Emitente = require("./emitente"),
     Destinatario = require("./destinatario"),

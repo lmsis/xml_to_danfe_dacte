@@ -39,9 +39,6 @@ var pdfDefaults = {
     alinhamentoDoCampo: "center",
     corDoCampo: "black",
 
-    tamanhoDaFonteDosItens: 7,
-    separadorDeItens: true,
-
     ajusteYDoLogotipo: 0,
     ajusteYDaIdentificacaoDoEmitente: 0,
 
@@ -66,24 +63,18 @@ module.exports = function (dacte, args, callback) {
 
     var emitente = dacte.getEmitente(),
         destinatario = dacte.getDestinatario(),
-        transportador = dacte.getTransportador(),
+        //   transportador = dacte.getTransportador(),
         impostos = dacte.getImpostos(),
         protocolo = dacte.getProtocolo(),
         itens = dacte.getItens(),
-        expeditor = dacte.getExpeditor(),
-        recebedor = dacte.getRecebedor(),
+        //  expeditor = dacte.getExpeditor(),
+        //  recebedor = dacte.getRecebedor(),
         cteInfo = dacte.getCteInfo(),
         pdf = new Pdf({
             pdfVersion: "1.7",
             bufferPages: true,
             margin: 0,
             size: [args.larguraDaPagina, args.alturaDaPagina],
-            info: {
-                Author: "Henrique Tardivo",
-                Title: args.titulo,
-                Creator: "Henrique Tardivo",
-                Producer: "http://github.com/HenriqueTardivo",
-            },
         });
     if (args.stream) {
         pdf.pipe(args.stream);
@@ -105,6 +96,7 @@ module.exports = function (dacte, args, callback) {
             }[toma] || ""
         );
     }
+
     ///////// LAYOUT
     var grossuraDaLinha = 0.5,
         margemTopo = 2.8,
@@ -261,6 +253,9 @@ module.exports = function (dacte, args, callback) {
         linhaHorizontal(0, 0, 0);
         linhaHorizontal(0, 0, 12);
         linhaHorizontal(0, -450, 30);
+
+        linhaHorizontal(300, -92.75, 30);
+
         linhaHorizontal(0, 0, 51.1);
         linhaVertical(0, 51.1, 0);
         linhaVertical(12, 51.1, 137);
@@ -274,165 +269,182 @@ module.exports = function (dacte, args, callback) {
         linhaHorizontal(241, 0, 112);
         linhaHorizontal(0, 0, 150.2);
         linhaHorizontal(0, 0, 170);
-        linhaVertical(59.55, 815, 0); //borda esquerda
-        linhaVertical(59.55, 221, 240.75);
+        linhaVertical(59.55, 833, 0); //borda esquerda
+        linhaVertical(59.55, 202, 240.75);
         linhaVertical(59.55, 90, 440); //aqui
         linhaVertical(59.55, 230, larguraDoFormulario);
         linhaVertical(90, 112, 290);
+
+        linhaVertical(221, 201, 240.75);
+
         linhaVertical(90, 112, 340);
         linhaVertical(90, 112, 400);
         linhaVertical(90, 112, 440);
         linhaVertical(90, 112, 515);
-        linhaVertical(150, 201, 120);
-        linhaVertical(200, 815, larguraDoFormulario); //borda direita
+        linhaVertical(170, 150, 120);
+        linhaVertical(200, 833, larguraDoFormulario); //borda direita
 
         //SEGUNDO BLOCO
-        linhaHorizontal(0, 0, 201.2);
+        //    linhaHorizontal(0, 0, 201.2);
         linhaHorizontal(0, 0, 221);
         linhaHorizontal(0, 0, 241);
         linhaVertical(201.2, 261, 0);
-        linhaVertical(221, 342, 274.9);
+        linhaVertical(221, 241, 195);
+        linhaVertical(221, 241, 377);
+        linhaHorizontal(241, 0, 200);
         linhaVertical(201.2, 261, larguraDoFormulario);
 
         //QUARTO BLOCO
-        linhaHorizontal(0, 0, 291);
-        linhaHorizontal(0, 0, 342);
-        linhaHorizontal(0, 0, 370);
+        linhaHorizontal(0, 0, 256);
+        linhaHorizontal(0, 0, 287);
 
-        //QUINTO BLOCO
-        //primeira linha
-        linhaVertical(370, 395, 320);
-        linhaVertical(370, 395, 480);
-        linhaHorizontal(0, 0, 395);
-        //segunda linha
-        linhaVertical(395, 425, 60);
-        linhaVertical(395, 425, 120);
-        linhaVertical(395, 425, 180);
-        linhaVertical(395, 425, 240);
-        linhaVertical(395, 425, 300);
-        linhaVertical(405, 425, 400);
-        linhaVertical(405, 425, 490);
-        linhaHorizontal(0, 0, 425);
-        linhaHorizontal(300, 0, 405);
-        linhaHorizontal(0, 0, 435);
+        //QUINTO BLOCO /
+        linhaHorizontal(0, 0, 303);
 
         //SEXTO BLOCO
-        linhaHorizontal(0, 0, 495);
-        linhaHorizontal(500, 0, 465);
-        linhaVertical(435, 495, 500);
-        linhaVertical(435, 495, 320);
-        linhaVertical(435, 495, 160);
-        linhaHorizontal(0, 0, 495);
-        linhaHorizontal(0, 0, 505);
+        linhaHorizontal(0, 0, 435);
+        linhaVertical(303, 435, 120);
+        linhaHorizontal(0, 0, 327);
 
-        //imposto
-        linhaVertical(505, 535, 140);
-        linhaVertical(505, 535, 220);
-        linhaVertical(505, 535, 310);
-        linhaVertical(505, 535, 400);
-        linhaVertical(505, 535, 480);
-        linhaHorizontal(0, 0, 535);
+        //SEXTO BLOCO
+        linhaHorizontal(0, 0, 454);
+        linhaVertical(454, 545, 120);
+        linhaVertical(454, 545, 241);
+        linhaVertical(454, 545, 360);
+        linhaHorizontal(360, 0, 500);
+        linhaHorizontal(0, 0, 545);
 
         //SETIMO BLOCO
-        linhaHorizontal(0, 0, 545);
-        linhaHorizontal(0, 0, 695);
-        linhaVertical(545, 695, 297);
+        linhaHorizontal(0, 0, 564);
+        linhaVertical(587, 564, 196);
+        linhaVertical(587, 564, 298);
+        linhaVertical(587, 564, 347);
+        linhaVertical(587, 564, 429);
+        linhaVertical(587, 564, 498);
+        linhaHorizontal(0, 0, 587);
 
-        //OITAVO BLOCO
-        linhaHorizontal(0, 0, 705);
-        linhaHorizontal(0, 0, 745);
-        linhaHorizontal(0, 0, 755);
+        // OITAVO BLOCO
+        linhaHorizontal(0, 0, 605);
+        linhaHorizontal(0, 0, 683);
+        linhaHorizontal(0, 0, 698);
+
+        // NONO BLOCO
+        linhaVertical(721, 698, 230);
+        linhaVertical(721, 698, 427);
+        linhaHorizontal(0, 0, 721);
+
+        // DECIMO BLOCO
+        linhaHorizontal(0, 0, 738);
+        linhaVertical(760, 738, 502);
+        linhaVertical(760, 738, 383);
+        linhaVertical(760, 738, 303);
+        linhaVertical(760, 738, 233);
+        linhaVertical(760, 738, 136);
+        linhaHorizontal(0, 0, 760);
         linhaHorizontal(0, 0, 775);
-        linhaHorizontal(0, 0, 785);
-        linhaHorizontal(0, 0, 815);
-        linhaVertical(755, 775, 120);
-        linhaVertical(755, 775, 190);
-        linhaVertical(755, 775, 280);
-        linhaVertical(775, 815, 460);
+        linhaVertical(760, 833, 376);
+
+        linhaHorizontal(0, 0, 833);
 
         var alturaInicialDoSetimoBloco = 793.6;
 
         //SEXTO BLOCO
-        titulo("VALOR TOTAL DO SERVIÇO", 502, 436, 300, "left", 5);
-        campo(dacte.getValorTotalDosServicos(), 517, 446, 300, "left");
-        titulo("VALOR A RECEBER", 502, 467, 300, "left", 5);
-        campo(dacte.getValorDoFreteFormatado(), 517, 477, 300, "lefte");
+        titulo("NOME", 3, 458, 300, "", 7);
+        titulo("VALOR", 93, 458, 300, "", 7);
 
-        titulo("NOME", 1, 436, 50);
-        titulo("VALOR", 80, 436, 50);
-        titulo("NOME", 161, 436, 50);
-        titulo("VALOR", 240, 436, 50);
-        titulo("NOME", 321, 436, 50);
-        titulo("VALOR", 400, 436, 50);
+        titulo("NOME", 124, 458, 300, "", 7);
+        titulo("VALOR", 213, 458, 300, "", 7);
 
-        //imposto
-        titulo("INFORMAÇÕES RELATIVAS AO IMPOSTO", 240, 496, 300);
-        titulo("SITUAÇÃO TRIBUTÁRIA", 1, 506, 300);
-        campo(impostos._valorDoPis, 1, 516, 100, "left"); //campo reutilizado
-        titulo("BASE DE CALCULO", 142, 506, 300);
-        campo(impostos._baseDeCalculoDoIcms, 142, 516, 100, "left");
-        titulo("ALÍQ ICMS", 220, 506, 300);
-        campo(impostos._valorTotalDoIpi, 220, 516, 100, "left");
-        titulo("VALOR ICMS", 312, 506, 300);
-        campo(impostos._valorDoIcms, 312, 516, 100, "left");
-        titulo("% RED. BC ICMS", 402, 506, 300);
-        campo(impostos._valorDaCofins, 402, 516, 100, "left");
-        titulo("ICMS ST", 482, 506, 300);
-        campo(impostos._ValorDoIcmsSt, 482, 516, 100, "left");
+        titulo("NOME", 245, 458, 300, "", 7);
+        titulo("VALOR", 330, 458, 300, "", 7);
 
-        //SETIMO BLOCO
-        titulo("DOCUMENTOS ORIGINÁRIOS", 250, 536, 300);
-        titulo("TIPO DOC", 1, 547, 300);
-        titulo("CNPJ/CHAVE", 60, 547, 300);
-        titulo("SÉRIE/NRO. DOCUMENTO", 220, 547, 300, "", 5);
-        titulo("TIPO DOC", 300, 547, 300);
-        titulo("CNPJ/CHAVE", 360, 547, 300);
-        titulo("SÉRIE/NRO. DOCUMENTO", 520, 547, 300, "", 5);
+        titulo("VALOR TOTAL DA PRESTAÇÃO DO SERVIÇO", 366, 458, 300, "left", 7);
+
+        campo(dacte.getValorTotalDosServicos(), 545, 475, 100, "left", 9);
+
+        titulo("VALOR A RECEBER", 366, 508, 383, "left", 7);
+        campo(dacte.getValorDoFrete(), 545, 520, 300, "left", 9);
+
+        //  SETIMO BLOCO - imposto
+        normal(
+            ["INFORMAÇÕES RELATIVAS AO IMPOSTO"].join(" ").toUpperCase(),
+            95,
+            550,
+            370,
+            "center"
+        );
+
+        titulo("SITUAÇÃO TRIBUTÁRIA", 2, 567, 505);
+        campo(impostos.getSitTrib(), 2, 577, 505, "left", 7);
+
+        titulo("BASE DE CALCULO", 199, 567, 505);
+        campo(impostos._baseDeCalculoDoIcms, 199, 577, 100, "left", 7);
+
+        titulo("ALÍQ ICMS", 301, 567, 530);
+        campo(impostos._valorTotalDoIpi, 301, 577, 100, "left", 7);
+
+        titulo("VALOR ICMS", 350, 567, 570);
+        campo(impostos._valorDoIcms, 350, 577, 100, "left", 7);
+
+        titulo("% RED. BC ICMS", 432, 567, 430);
+        campo(impostos._valorDaCofins, 432, 577, 100, "left", 7);
+
+        titulo("ICMS ST", 500, 567, 490);
+        campo(impostos._ValorDoIcmsSt, 500, 577, 100, "left", 7);
 
         //OITAVO BLOCO
-        titulo("OBSERVAÇÕES", 270, 696, 300);
-        normal(cteInfo.getObservacao(), 1, 706, 585, "left", 6);
-        titulo(
-            "DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - CARGA FRACIONADA",
-            160,
-            746,
-            300
-        );
-        titulo("RNTRC DA EMPRESA", 1, 756, 300);
-        campo(cteInfo.getRNTRC(), 1, 766, 200, "left", 8);
-        titulo("CIOT", 121, 756, 300);
-        campo(cteInfo.getCIOT(), 121, 766, 200, "left", 8); //
-        titulo("DATA PREVISTA DE ENTREGA", 191, 756, 300, "", 5);
-        campo(cteInfo.getDataEntrega(), 191, 766, 200, "left", 7); //
-        titulo(
-            "ESTE CONHECIMENTO DE TRANSPORTE ATENDE À LEGISLAÇÃO DE TRANSPORTE RODOVIÁRIO EM VIGOR",
-            291,
-            756,
-            250,
-            "center",
-            6
-        );
-        titulo("USO EXCLUSIVO DO EMISSOR DO CT-E", 185, 776, 200);
-        titulo("RESERVADO AO FISCO", 491, 776, 200);
-        alturaInicialDoSetimoBloco = 762.2;
+        normal(["OBSERVAÇÕES"].join(" ").toUpperCase(), 238, 592, 90, "center");
 
-        // SÉTIMO BLOCO
+        campo(cteInfo.getObservacao(), 3, 610, 550, "left", 8);
+
+        //NONO BLOCO
         normal(
-            [
-                "DECLARO QUE RECEBI OS VOLUMES DESTE CONHECIMENTO EM PERFEITO ESTADO PELO QUE DOU POR CUMPRIDO O PRESENTE CONTRATO DE TRANSPORTE",
-            ]
+            ["SEGURO DA VIAGEM"].join(" ").toUpperCase(),
+            250,
+            686,
+            80,
+            "center"
+        );
+
+        titulo("NOME DA SEGURADORA", 2, 700, 500);
+        campo(cteInfo.getNomeSeg(), 2, 710, 500, "left", 7);
+        titulo("RESPONSÁVEL", 233, 700, 500);
+        campo(cteInfo.getRespSeg(), 233, 710, 500, "left", 7);
+        titulo("NÚMERO DA APÓLICE", 430, 700, 500);
+        campo(cteInfo.getApol(), 430, 710, 500, "left", 7);
+
+        //DECIMO BLOCO
+        normal(
+            ["INFORMAÇÕES ESPECÍFICAS DO MODAL RODOVIÁRIO"]
                 .join(" ")
                 .toUpperCase(),
-            1.5,
-            3,
-            595.44,
-            "center",
-            6.9
+            135,
+            725,
+            300,
+            "center"
         );
 
-        campo("DACTE", 240, 63.5, 197, "center", 10);
-        normal(dacte.getNumeroFormatado(), 484, 22, 110, "center", 6);
-        normal(dacte.getSerieFormatada(), 487, 40, 110, "center", 6);
+        titulo("TERMO DE AUTORIZAÇÃO DE FRETAMENTO", 2, 741, 300);
+        campo(cteInfo.getRodo(), 3, 751, 200, "left", 7);
+
+        titulo("N° DO REGISTRO ESTADUAL", 140, 741, 300);
+        campo(cteInfo.getNumeroRegEstadual(), 43, 750, 280, "", 7);
+
+        titulo("PLACA DO VEÍCULO", 236, 741, 300);
+        campo(cteInfo.getPlaca(), 50, 750, 400, "", 7);
+
+        titulo("RENAVAN DO VEÍCULO", 306, 741, 300);
+        campo(cteInfo.getRenavam(), 115, 750, 420, "", 7);
+
+        titulo("UF DE LICENCIAMENTO DO VEÍCULO", 385, 741, 300);
+        campo(cteInfo.getUFveiculo(), 170, 750, 440, "", 7);
+
+        titulo("CNPJ/CPF", 505, 741, 300);
+        campo(emitente.getRegistroNacional(), 304, 750, 460, "", 7);
+
+        titulo("USO EXCLUSIVO DO EMISSOR DO CT-e OS", 112, 763, 400, "", 8);
+
+        titulo("RESERVADO AO FISCO", 430, 763, 400, "", 8);
 
         var temLogotipo = emitente.getLogotipo(),
             identificacaoDoEmitenteY = temLogotipo ? 78 : 84,
@@ -516,9 +528,7 @@ module.exports = function (dacte, args, callback) {
         }
         if (emitente.getInscricaoEstadual()) {
             infoEmitente =
-                infoEmitente +
-                "  Insc.Estadual: " +
-                emitente.getInscricaoEstadual();
+                infoEmitente + "  IE: " + emitente.getInscricaoEstadual();
         }
 
         if (infoEmitente !== "") {
@@ -532,11 +542,12 @@ module.exports = function (dacte, args, callback) {
             );
         }
 
-        normal(
-            "Documento Auxiliar do Conhecimento de Transporte Eletrônico",
-            270,
-            72,
-            135,
+        campo("DACTE OS", 237, 62, 200, "", 12);
+        titulo(
+            "Documento Auxiliar do Conhecimento de Transporte Eletrônico para Outros Serviços",
+            237,
+            75,
+            200,
             "center"
         );
 
@@ -578,12 +589,29 @@ module.exports = function (dacte, args, callback) {
         );
 
         //RECIBO
+        normal(
+            [
+                "DECLARO QUE RECEBI OS VOLUMES DESTE CONHECIMENTO EM PERFEITO ESTADO PELO QUE DOU POR CUMPRIDO O PRESENTE CONTRATO DE TRANSPORTE",
+            ]
+                .join(" ")
+                .toUpperCase(),
+            1.5,
+            3,
+            595.44,
+            "center",
+            6.9
+        );
+
         titulo("NOME", 2, 13, 97);
         titulo("RG", 2, 31, 97);
         titulo("ASSINATURA / CARIMBO ", 182, 45, 374);
         titulo("TÉRMINO DA PRESTAÇÃO - DATA/HORA ", 340, 13, 374);
         titulo("INÍCIO DA PRESTAÇÃO - DATA/HORA ", 340, 31, 374);
-        campo("CT-E ", 355, 13, 374, "center", 8);
+        campo("CT-e OS ", 355, 13, 374, "center", 8);
+        titulo("N°:", 340, 25, 324, "center", 8);
+        campo(dacte.getNumero(), 350, 25, 330, "center", 8);
+        titulo("Série:", 340, 38, 338, "center", 8);
+        campo(dacte.getSerie(), 340, 38, 370, "center", 8);
 
         var codigoDeBarrasCodificado = barcode.code128.encode(
             dacte.getChaveDeAcesso()
@@ -605,14 +633,10 @@ module.exports = function (dacte, args, callback) {
         //PRIMEIRO BLOCO
         campo(dacte.getChaveDeAcesso(), 280, 160, 244);
         titulo("CHAVE DE ACESSO", 245, 151, 244, "", 8);
-        titulo("TIPO DO CTE", 40, 151, 338, "", 8);
+        titulo("TIPO DO CTE", 40, 151, 338, "", 7);
         campo(cteInfo.getTpCte(), 1.5, 160, 120); /// TODO: dacte.getTipoCTE()
-
         titulo("TIPO DO SERVIÇO", 150, 151, 338, "", 8);
-        campo(cteInfo.getTpServ(), 120, 160, 120); /// TODO: dacte.getTipoServicoCTE()
-
-        titulo("TOMADOR DE SERVIÇO", 20, 171, 338, "", 8);
-        campo(cteInfo.getToma(), 1.5, 190, 120); /// TODO: dacte.getTipoServicoCTE()
+        campo(cteInfo.getTipoServ(), 120, 160, 120, "", 8);
 
         titulo(
             "Consulta de autenticidade no portal nacional do CT-e, no site da Sefaz Autorizadora, ou em http://www.cte.fazenda.gov.br",
@@ -626,279 +650,99 @@ module.exports = function (dacte, args, callback) {
         titulo("PROTOCOLO DE AUTORIZAÇÃO DE USO", 245, 202, 244, "", 8);
         campo(protocolo.getFormatacao(), 300, 212, 244, "", 8);
 
-        titulo("CFOP - NATUREZA DA OPERAÇÃO", 1.5, 202, 353.5, "", 8);
-        campo(cteInfo.getCfopFrete(), 1.5, 212, 300, "left", 7);
+        titulo("CFOP - NATUREZA DA OPERAÇÃO", 1.5, 171, 355, "", 8);
+        campo(cteInfo.getCFOP(), 1.5, 180, 300, "left", 8);
+        campo(cteInfo.getNatOp(), 24.5, 180, 210, "left", 8);
+
         titulo("INÍCIO DA PRESTAÇÃO", 1.5, 222, 272, "", 8);
         campo(cteInfo.getInicioPrestacao(), 1, 230, 120, "left", 8);
-        titulo("TÉRMINO DA PRESTAÇÃO", 278, 222, 119, "", 8);
-        campo(cteInfo.getFinalDaPrestacao(), 278, 230, 120, "left", 8);
 
-        //QUARTO BLOCO
-        titulo("REMETENTE", 1, 241, 100, "left", 7);
-        titulo("ENDEREÇO", 1, 251, 100, "left", 7);
-        titulo("MUNICÍPIO", 1, 261, 100, "left", 7);
-        titulo("CEP", 110, 261, 100, "right", 7);
-        titulo("CNPJ/CPF", 1, 271, 100, "left", 7);
-        titulo("INSCRIÇÃO ESTADUAL", 110, 271, 100, "right", 7);
-        titulo("PAÍS", 1, 281, 100, "left", 7);
-        titulo("FONE", 110, 281, 100, "right", 7);
-        campo(transportador.getNome(), 45, 241, 400, "left", 7);
-        campo(transportador.getEndereco().getCep(), 215, 261, 100, "left", 7);
-        campo(transportador.getInscricaoEstadual(), 215, 271, 100, "left", 7);
-        campo(transportador.getTelefone(), 215, 281, 100, "left", 7);
-        campo(
-            transportador.getEndereco().getPrimeiraLinha(),
-            40,
-            251,
-            280,
-            "left",
-            6
-        );
-        campo(
-            transportador.getEndereco().getMunicipio(),
-            40,
-            261,
-            120,
-            "left",
-            7
-        );
-        campo(
-            transportador.getRegistroNacionalFormatado(),
-            40,
-            271,
-            120,
-            "left",
-            7
-        );
-        campo(transportador.getEndereco().getPais(), 40, 281, 120, "left", 7);
+        titulo("PERCURSO DO VEÍCULO", 200, 222, 100, "", 8);
 
-        titulo("DESTINATÁRIO", 278, 241, 100, "left", 7);
-        titulo("ENDEREÇO", 278, 251, 120, "left", 7);
-        titulo("MUNICÍPIO", 278, 261, 100, "left", 7);
-        titulo("CEP", 420, 261, 100, "right", 7);
-
-        titulo("CNPJ/CPF", 278, 271, 100, "left", 7);
-        titulo("INSCRIÇÃO ESTADUAL", 420, 271, 100, "right", 7);
-
-        titulo("PAÍS", 278, 281, 100, "left", 7);
-        titulo("FONE", 420, 281, 100, "right", 7);
-        campo(destinatario.getEndereco().getCep(), 525, 261, 100, "left", 7);
-        campo(destinatario.getInscricaoEstadual(), 525, 271, 100, "left", 7);
-
-        campo(destinatario.getTelefone(), 525, 281, 100, "left", 7);
-
-        campo(destinatario.getNome(), 331, 241, 400, "left", 7);
-        campo(
-            destinatario.getEndereco().getPrimeiraLinha(),
-            321,
-            251,
-            280,
-            "left",
-            6
-        );
-        campo(
-            destinatario.getEndereco().getMunicipio(),
-            321,
-            261,
-            120,
-            "left",
-            7
-        );
-        campo(
-            destinatario.getRegistroNacionalFormatado(),
-            321,
-            271,
-            120,
-            "left",
-            7
-        );
-        campo(destinatario.getEndereco().getPais(), 321, 281, 120, "left", 7);
-
-        //QUARTO BLOCO
-        titulo("EXPEDITOR", 1, 292, 100, "left", 7);
-        titulo("ENDEREÇO", 1, 302, 100, "left", 7);
-        titulo("MUNICÍPIO", 1, 312, 100, "left", 7);
-        titulo("CEP", 110, 312, 100, "right", 7);
-        titulo("CNPJ/CPF", 1, 322, 100, "left", 7);
-        titulo("INSCRIÇÃO ESTADUAL", 110, 322, 100, "right", 7);
-        titulo("PAÍS", 1, 332, 100, "left", 7);
-        titulo("FONE", 110, 332, 100, "right", 7);
-        campo(expeditor.getNome(), 45, 292, 400, "left", 7);
-        campo(expeditor.getEndereco().getCep(), 215, 312, 100, "left", 7);
-        campo(expeditor.getInscricaoEstadual(), 215, 322, 100, "left", 7);
-        campo(expeditor.getTelefone(), 215, 332, 100, "left", 7);
-        campo(
-            expeditor.getEndereco().getPrimeiraLinha(),
-            40,
-            302,
-            280,
-            "left",
-            6
-        );
-        campo(expeditor.getEndereco().getMunicipio(), 40, 312, 120, "left", 7);
-        campo(
-            expeditor.getRegistroNacionalFormatado(),
-            40,
-            322,
-            280,
-            "left",
-            6
-        );
-        campo(expeditor.getEndereco().getPais(), 40, 332, 120, "left", 7);
-
-        titulo("RECEBEDOR", 278, 292, 100, "left", 7);
-        titulo("ENDEREÇO", 278, 302, 120, "left", 7);
-        titulo("MUNICÍPIO", 278, 312, 100, "left", 7);
-        titulo("CEP", 420, 312, 100, "right", 7);
-
-        titulo("CNPJ/CPF", 278, 322, 100, "left", 7);
-        titulo("INSCRIÇÃO ESTADUAL", 420, 322, 100, "right", 7);
-
-        titulo("PAÍS", 278, 332, 100, "left", 7);
-        titulo("FONE", 420, 332, 100, "right", 7);
-        campo(recebedor.getEndereco().getCep(), 525, 312, 100, "left", 7);
-        campo(recebedor.getInscricaoEstadual(), 525, 322, 100, "left", 7);
-        campo(recebedor.getTelefone(), 525, 332, 100, "left", 7);
-
-        campo(recebedor.getNome(), 331, 292, 400, "left", 7);
-        campo(
-            recebedor.getEndereco().getPrimeiraLinha(),
-            321,
-            302,
-            120,
-            "left",
-            7
-        );
-        campo(recebedor.getEndereco().getMunicipio(), 321, 312, 120, "left", 7);
-        campo(
-            recebedor.getRegistroNacionalFormatado(),
-            321,
-            322,
-            120,
-            "left",
-            7
-        );
-        campo(recebedor.getEndereco().getPais(), 321, 331, 120, "left", 7);
+        titulo("TÉRMINO DA PRESTAÇÃO", 380, 222, 119, "", 8);
+        campo(cteInfo.getFinalDaPrestacao(), 380, 230, 120, "left", 8);
 
         //BLOCO TOMADOR DE SERVIÇO
+        normal(
+            ["TOMADOR / USUÁRIO DO SERVIÇO"].join(" ").toUpperCase(),
+            168,
+            244,
+            200,
+            "center"
+        );
+
         const tomador = TomadorDeServico(cteInfo.getCodToma());
-        titulo("TOMADOR DE SERVIÇO", 1, 342, 100, "left", 7);
-        titulo("ENDEREÇO", 1, 352, 100, "left", 7);
-        titulo("CNPJ/CPF", 1, 362, 100, "left", 7);
-        titulo("INSCRIÇÃO ESTADUAL", 300, 362, 100, "left", 7);
-        titulo("MUNICÍPIO", 300, 342, 100, "left", 7);
-        titulo("UF", 450, 342, 100, "left", 7);
-        titulo("CEP", 510, 342, 100, "left", 7);
-        titulo("FONE", 510, 362, 100, "left", 7);
-        titulo("PAÍS", 450, 362, 100, "left", 7);
+        titulo("NOME/RAZÃO:", 1, 258, 300, "left", 7);
+        titulo("ENDEREÇO:", 1, 267, 300, "left", 7);
+        titulo("CNPJ/CPF:", 1, 276, 100, "left", 7);
+        titulo("INSCRIÇÃO ESTADUAL:", 170, 276, 100, "left", 7);
+        titulo("MUNICÍPIO:", 300, 258, 100, "left", 7);
+        titulo("UF:", 400, 267, 100, "left", 7);
+        titulo("CEP:", 508, 258, 100, "left", 7);
+        titulo("FONE:", 370, 276, 100, "left", 7);
+        titulo("PAÍS:", 450, 267, 100, "left", 7);
 
         if (tomador !== "") {
-            campo(tomador.getNome(), 85, 342, 250, "left", 7);
+            campo(tomador.getNome(), 51, 258, 200, "left", 7);
             campo(
                 tomador.getEndereco().getPrimeiraLinha(),
-                80,
-                352,
+                42,
+                267,
                 200,
                 "left",
                 7
             );
             campo(
                 tomador.getRegistroNacionalFormatado(),
-                80,
-                362,
+                35,
+                276,
                 200,
                 "left",
                 7
             );
-            campo(tomador.getInscricaoEstadual(), 380, 362, 200, "left", 7);
+            campo(tomador.getInscricaoEstadual(), 249, 276, 100, "left", 7);
             campo(
                 tomador.getEndereco().getMunicipio(),
-                360,
-                342,
-                200,
+                340,
+                258,
+                120,
                 "left",
                 7
             );
-            campo(tomador.getEndereco().getPais(), 470, 362, 200, "left", 7);
-            campo(tomador.getEndereco().getUf(), 465, 342, 200, "left", 7);
-            campo(tomador.getEndereco().getCep(), 530, 342, 200, "left", 7);
-            campo(tomador.getTelefone(), 530, 362, 200, "left", 7);
+            campo(tomador.getEndereco().getPais(), 468, 267, 100, "left", 7);
+            campo(tomador.getEndereco().getUf(), 412, 267, 100, "left", 7);
+            campo(tomador.getEndereco().getCep(), 524, 258, 200, "left", 7);
+            campo(tomador.getTelefone(), 392, 276, 100, "left", 7);
         }
 
         //QUINTO BLOCO
-        //primeira linha
-        titulo("PRODUTO PREDOMINANTE", 1, 372, 100, "left", 7);
-        campo(cteInfo.getProdPred(), 1, 382, 400, "left", 6);
-        titulo("OUTRAS CARACTERÍSTICAS DA CARGA", 322, 372, 300, "left", 7);
-        campo(cteInfo.getCaracCarga(), 322, 382, 300, "left");
-        titulo("VALOR TOTAL DA MERCADORIA", 482, 372, 300, "left", 6);
-        campo(dacte.getValorTotalDosProdutosFormatado(), 482, 382, 200, "left");
-        //segunda linha
-        titulo("QNT. /UN. MED", 1, 398, 100, "left", 7);
-        titulo("QNT. /UN. MED", 62, 398, 300, "left", 7);
-        titulo("QNT. /UN. MED", 122, 398, 300, "left", 7);
+        normal(
+            ["INFORMAÇÕES DA PRESTAÇÃO DO SERVIÇO"].join(" ").toUpperCase(),
+            188,
+            291,
+            200,
+            "center"
+        );
+        titulo("QUANTIDADE", 40, 306, 200, "", 7);
+        campo(cteInfo.getCargaOS(), 18, 316, 70, "", 7);
 
-        let xMedida = -58,
-            yMedida = 404,
-            medidas = cteInfo.getMedidas();
+        titulo("DESCRIÇÃO DO SERVIÇO PRESTADO", 140, 306, 200, "", 7);
+        campo(cteInfo.getDescServico(), 93, 317, 210, "", 7);
 
-        if (medidas && Array.isArray(medidas)) {
-            medidas.map((medida) => {
-                xMedida += 60;
-                if (xMedida > 122) {
-                    xMedida = 2;
-                    yMedida = 416;
-                }
-                return campo(
-                    String(
-                        medida.qCarga._text +
-                            " / " +
-                            cteInfo.retornaUnidadeMedida(medida.cUnid._text)
-                    ),
-                    xMedida,
-                    yMedida,
-                    60,
-                    "left",
-                    8
-                );
-            });
-        } else if (medidas) {
-            campo(
-                String(
-                    medidas.qCarga._text +
-                        " / " +
-                        cteInfo.retornaUnidadeMedida(medidas.cUnid._text)
-                ),
-                1,
-                408,
-                30,
-                "left",
-                8
-            );
-        }
-
-        titulo("CUBAGEM(M3)", 182, 398, 300, "left", 7);
-        campo(cteInfo.getCubagem(), 182, 408, 200, "left", 6);
-
-        titulo("QTDE(VOL)", 242, 398, 300, "left", 7);
-        campo(cteInfo.getVolume(), 242, 408, 200, "left", 6);
-        titulo("NOME DA SEGURADORA", 302, 398, 300, "left", 6);
-        titulo("RESPONSÁVEL ", 302, 408, 300, "left", 6);
-        titulo("NÚMERO DA APOLICE", 402, 408, 120, "left", 6);
-        titulo("NÚMERO DA AVERBAÇÃO", 492, 408, 300, "left", 6);
-
-        titulo(
-            "COMPONENTES DO VALOR DA PRESTAÇÃO DO SERVIÇO",
-            195,
-            426,
-            300,
-            "left",
-            7
+        //SEXTO BLOCO
+        normal(
+            ["COMPONENTES DO VALOR DA PRESTAÇÃO DO SERVIÇO"]
+                .join(" ")
+                .toUpperCase(),
+            170,
+            440,
+            250,
+            "center"
         );
 
         let componenteServico = cteInfo.getComponenteServico(),
-            xComponente = 1,
-            yComponente = 436;
+            xComponente = 3,
+            yComponente = 460;
         if (componenteServico && Array.isArray(componenteServico)) {
             componenteServico.map((componente) => {
                 yComponente += 10;

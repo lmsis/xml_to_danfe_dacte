@@ -2,6 +2,7 @@
 
 var geradorDePdf = require("./geradores/geradorDePdf");
 var gerarPdfCTE = require("./geradores/gerarPdfCTE");
+var geradorPdfCTEOS = require("./geradores/geradorPdfCteOs");
 
 var Gerador = (function () {
     function Gerador(danfe) {
@@ -24,6 +25,15 @@ var Gerador = (function () {
         }
 
         gerarPdfCTE(this._danfe, opcoes, callback);
+    };
+
+    Gerador.prototype.gerarCTEOS = function (opcoes, callback) {
+        if (typeof opcoes === "function") {
+            callback = opcoes;
+            opcoes = {};
+        }
+
+        geradorPdfCTEOS(this._danfe, opcoes, callback);
     };
 
     // Gerador.prototype.gerarHTML = function() {
