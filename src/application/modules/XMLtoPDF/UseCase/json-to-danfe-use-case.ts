@@ -1,5 +1,6 @@
 import { Idet, INfe, Icms_generico, Iduplicata } from "../../interfaces/INfe";
 import { MaskFields } from "../../../utils/MaskFields";
+import { pdfGeneratorCallback } from "./pdf-generator-callback";
 
 class JsonToDanfe {
   find_ICMS_prod(imposto: any): Icms_generico {
@@ -35,7 +36,8 @@ class JsonToDanfe {
       Duplicata = danfe_roma.Duplicata,
       Fatura = danfe_roma.Fatura;
 
-    let pdfBase64 = "";
+    // A geração do PDF deve resolver apenas após o evento 'end' do PDFKit,
+    // caso contrário o base64 pode ficar incompleto/corrompido em alguns navegadores (ex.: Edge).
 
     var emitente = new Emitente();
     emitente.comNome(json.nfeProc?.NFe.infNFe.emit.xNome?._text);
@@ -230,32 +232,28 @@ class JsonToDanfe {
       );
     }
 
-    new Gerador(danfe).gerarPDF(
-      {
-        ambiente: json.nfeProc?.protNFe.infProt.tpAmb._text == "2" ? "homologacao" : "producao",
-        ajusteYDoLogotipo: -4,
-        ajusteYDaIdentificacaoDoEmitente: 4,
-        creditos: "",
-      },
-      function (err: any, pdf: PDFKit.PDFDocument) {
-        if (err) {
-          throw err;
-        }
-
-        const chunks: Buffer[] = [];
-
-        pdf.on("data", (chunk: Buffer) => {
-          chunks.push(chunk);
-        });
-
-        pdf.on("end", () => {
-          const data = Buffer.concat(chunks);
-          pdfBase64 = data.toString("base64");
-        });
+    return await new Promise<string>((resolve, reject) => {
+      try {
+        new Gerador(danfe).gerarPDF(
+          {
+            ambiente: json.nfeProc?.protNFe.infProt.tpAmb._text == "2" ? "homologacao" : "producao",
+            ajusteYDoLogotipo: -4,
+            ajusteYDaIdentificacaoDoEmitente: 4,
+            creditos: "",
+          },
+          async function (err: any, pdf: PDFKit.PDFDocument) {
+            try {
+              const pdfBase64 = await pdfGeneratorCallback(err, pdf, "base64", "");
+              resolve(pdfBase64);
+            } catch (e) {
+              reject(e);
+            }
+          }
+        );
+      } catch (e) {
+        reject(e);
       }
-    );
-
-    return new Promise((resolve) => setTimeout(() => resolve(pdfBase64)));
+    });
   }
 }
 

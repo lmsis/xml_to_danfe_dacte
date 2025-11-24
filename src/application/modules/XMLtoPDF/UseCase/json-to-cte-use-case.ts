@@ -1,5 +1,6 @@
 import { IDaCte, IinfNFe, Icms_generico } from "../../interfaces/IDaCte";
 import { MaskFields } from "../../../utils/MaskFields";
+import { pdfGeneratorCallback } from "./pdf-generator-callback";
 
 class JsonToCTE {
   returnICMS(imposto: any): Icms_generico | null {
@@ -224,32 +225,28 @@ class JsonToCTE {
       );
     }
 
-    new Gerador(danfe).gerarCTE(
-      {
-        ambiente: json.cteProc?.protCTe?.infProt.tpAmb._text == "2" ? "homologacao" : "producao",
-        ajusteYDoLogotipo: -4,
-        ajusteYDaIdentificacaoDoEmitente: 4,
-        creditos: "",
-      },
-      function (err: any, pdf: PDFKit.PDFDocument) {
-        if (err) {
-          throw err;
-        }
-
-        const chunks: Buffer[] = [];
-
-        pdf.on("data", (chunk: Buffer) => {
-          chunks.push(chunk);
-        });
-
-        pdf.on("end", () => {
-          const data = Buffer.concat(chunks);
-          pdfBase64 = data.toString("base64");
-        });
+    return await new Promise<string>((resolve, reject) => {
+      try {
+        new Gerador(danfe).gerarCTE(
+          {
+            ambiente: json.cteProc?.protCTe?.infProt.tpAmb._text == "2" ? "homologacao" : "producao",
+            ajusteYDoLogotipo: -4,
+            ajusteYDaIdentificacaoDoEmitente: 4,
+            creditos: "",
+          },
+          async function (err: any, pdf: PDFKit.PDFDocument) {
+            try {
+              const pdfBase64 = await pdfGeneratorCallback(err, pdf, "base64", "");
+              resolve(pdfBase64);
+            } catch (e) {
+              reject(e);
+            }
+          }
+        );
+      } catch (e) {
+        reject(e);
       }
-    );
-
-    return new Promise((resolve) => setTimeout(() => resolve(pdfBase64)));
+    });
   }
 }
 
