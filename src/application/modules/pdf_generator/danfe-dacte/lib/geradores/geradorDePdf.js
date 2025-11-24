@@ -101,12 +101,10 @@ module.exports = function (danfe, args, callback) {
         pdf.pipe(args.stream);
     }
 
-    pdf.registerFont("normal", timesNewRoman);
-    pdf.registerFont("negrito", timesNewRomanNegrito);
-    pdf.registerFont("italico", timesNewRomanItalico);
-    pdf.registerFont("negrito-italico", timesNewRomanNegritoItalico);
+    // Uso de fontes Base 14 do PDF (sem embed de TTF):
+    // Times-Roman, Times-Bold, Times-Italic, Times-BoldItalic
     pdf.registerFont("codigoDeBarras", barcode.code128.font);
-    pdfTemporario.registerFont("normal", timesNewRoman);
+    // pdfTemporario utiliza fontes Base 14 diretamente quando necessário
 
     ///////// LAYOUT
     var grossuraDaLinha = 0.5,
@@ -156,7 +154,7 @@ module.exports = function (danfe, args, callback) {
 
         x = margemEsquerda + args.ajusteX + x;
         y = margemTopo + args.ajusteY + y;
-        pdf.font("negrito")
+        pdf.font("Times-Bold")
             .fillColor(args.corDaSecao)
             .fontSize(tamanho || args.tamanhoDaFonteDaSecao)
             .text(string.toUpperCase(), x, y, {
@@ -175,7 +173,7 @@ module.exports = function (danfe, args, callback) {
         x = margemEsquerda + args.ajusteX + x;
         y = margemTopo + args.ajusteY + y;
 
-        pdf.font("normal")
+        pdf.font("Times-Roman")
             .fillColor(args.corDoTitulo)
             .fontSize(tamanho || args.tamanhoDaFonteDoTitulo)
             .text(string.toUpperCase(), x, y, {
@@ -188,7 +186,7 @@ module.exports = function (danfe, args, callback) {
         string = string || "";
 
         (_pdf || pdf)
-            .font("normal")
+            .font("Times-Roman")
             .fillColor(args.corDoTitulo)
             .fontSize(tamanho || 8)
             .text(
@@ -206,7 +204,7 @@ module.exports = function (danfe, args, callback) {
     function italico(string, x, y, largura, alinhamento, tamanho) {
         string = string || "";
 
-        pdf.font("italico")
+        pdf.font("Times-Italic")
             .fillColor(args.corDoTitulo)
             .fontSize(tamanho || 6)
             .text(
@@ -224,7 +222,7 @@ module.exports = function (danfe, args, callback) {
     function negrito(string, x, y, largura, alinhamento, tamanho) {
         string = string || "";
 
-        pdf.font("negrito")
+        pdf.font("Times-Bold")
             .fillColor(args.corDoTitulo)
             .fontSize(tamanho || 6)
             .text(
@@ -242,7 +240,7 @@ module.exports = function (danfe, args, callback) {
     function campo(string, x, y, largura, alinhamento, tamanho) {
         string = string || "";
 
-        pdf.font("negrito")
+        pdf.font("Times-Bold")
             .fillColor(args.corDoCampo)
             .fontSize(tamanho || args.tamanhoDaFonteDoCampo)
             .text(
@@ -260,7 +258,7 @@ module.exports = function (danfe, args, callback) {
         alturaDoBlocoFaturaDuplicatas = 0;
 
         if (args.ambiente !== "producao") {
-            pdf.font("normal")
+            pdf.font("Times-Roman")
                 .fillColor(args.corDoTitulo)
                 .fontSize(50)
                 .fillOpacity(args.opacidadeDaHomologacao)
@@ -274,7 +272,7 @@ module.exports = function (danfe, args, callback) {
                     }
                 );
 
-            pdf.font("normal")
+            pdf.font("Times-Roman")
                 .fillColor(args.corDoTitulo)
                 .fontSize(25)
                 .fillOpacity(args.opacidadeDaHomologacao)
