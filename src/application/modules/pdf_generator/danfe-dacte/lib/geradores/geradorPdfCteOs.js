@@ -51,8 +51,6 @@ var pdfDefaults = {
     larguraDaPagina: 595.28,
     alturaDaPagina: 841.89,
     creditos: "Desenvolvido por Romagnole",
-    // Permite escolher a família Base 14 (sem embed): 'Helvetica' ou 'Times'
-    familiaBase14: "Helvetica",
 };
 
 module.exports = function (dacte, args, callback) {
@@ -82,29 +80,11 @@ module.exports = function (dacte, args, callback) {
         pdf.pipe(args.stream);
     }
 
-    // Uso de fontes Base 14 do PDF (sem embed de TTF):
-    // Família parametrizável (Helvetica ou Times)
+    pdf.registerFont("normal", timesNewRoman);
+    pdf.registerFont("negrito", timesNewRomanNegrito);
+    pdf.registerFont("italico", timesNewRomanItalico);
+    pdf.registerFont("negrito-italico", timesNewRomanNegritoItalico);
     pdf.registerFont("codigoDeBarras", barcode.code128.font);
-
-    // Mapa de fontes por família Base 14
-    var familia = (args.familiaBase14 || "Helvetica").toLowerCase();
-    var fonteNormal,
-        fonteNegrito,
-        fonteItalico,
-        fonteNegritoItalico;
-
-    if (familia === "times") {
-        fonteNormal = "Times-Roman";
-        fonteNegrito = "Times-Bold";
-        fonteItalico = "Times-Italic";
-        fonteNegritoItalico = "Times-BoldItalic";
-    } else {
-        // Default: Helvetica
-        fonteNormal = "Helvetica";
-        fonteNegrito = "Helvetica-Bold";
-        fonteItalico = "Helvetica-Oblique";
-        fonteNegritoItalico = "Helvetica-BoldOblique";
-    }
 
     function TomadorDeServico(toma) {
         return (
@@ -157,7 +137,7 @@ module.exports = function (dacte, args, callback) {
         x = margemEsquerda + args.ajusteX + x;
         y = margemTopo + args.ajusteY + y;
 
-        pdf.font(fonteNormal)
+        pdf.font("normal")
             .fillColor(args.corDoTitulo)
             .fontSize(tamanho || args.tamanhoDaFonteDoTitulo)
             .text(string.toUpperCase(), x, y, {
@@ -170,7 +150,7 @@ module.exports = function (dacte, args, callback) {
         string = string || "";
 
         (_pdf || pdf)
-            .font(fonteNormal)
+            .font("normal")
             .fillColor(args.corDoTitulo)
             .fontSize(tamanho || 8)
             .text(
@@ -188,7 +168,7 @@ module.exports = function (dacte, args, callback) {
     function italico(string, x, y, largura, alinhamento, tamanho) {
         string = string || "";
 
-        pdf.font(fonteItalico)
+        pdf.font("italico")
             .fillColor(args.corDoTitulo)
             .fontSize(tamanho || 6)
             .text(
@@ -206,7 +186,7 @@ module.exports = function (dacte, args, callback) {
     function negrito(string, x, y, largura, alinhamento, tamanho) {
         string = string || "";
 
-        pdf.font(fonteNegrito)
+        pdf.font("negrito")
             .fillColor(args.corDoTitulo)
             .fontSize(tamanho || 6)
             .text(
@@ -224,7 +204,7 @@ module.exports = function (dacte, args, callback) {
     function campo(string, x, y, largura, alinhamento, tamanho) {
         string = string || "";
 
-        pdf.font(fonteNegrito)
+        pdf.font("negrito")
             .fillColor(args.corDoCampo)
             .fontSize(tamanho || args.tamanhoDaFonteDoCampo)
             .text(
@@ -240,7 +220,7 @@ module.exports = function (dacte, args, callback) {
 
     function desenharPagina() {
         if (args.ambiente !== "producao") {
-            pdf.font(fonteNormal)
+            pdf.font("normal")
                 .fillColor(args.corDoTitulo)
                 .fontSize(50)
                 .fillOpacity(args.opacidadeDaHomologacao)
@@ -254,7 +234,7 @@ module.exports = function (dacte, args, callback) {
                     }
                 );
 
-            pdf.font(fonteNormal)
+            pdf.font("normal")
                 .fillColor(args.corDoTitulo)
                 .fontSize(25)
                 .fillOpacity(args.opacidadeDaHomologacao)
