@@ -3,6 +3,7 @@ FROM --platform=amd64 oven/bun as base
 WORKDIR /app
 
 COPY . .
+RUN bun install
 
 # run the app
 USER bun
